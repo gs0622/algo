@@ -11,10 +11,11 @@ void strrev(char *p)
     char *q = p;
     if (NULL==q) return;
     while (*q) q++; /*move to tail*/
-#if 0
+#if 1
     for (q--/*tail is '\0'*/;q>p;p++,q--) swap(p, q);
-#endif
+#else
     while (--q > p) swap(p++, q);
+#endif
 }
 
 void strrev_utf8(char *p)
