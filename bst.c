@@ -50,8 +50,16 @@ void delete(int v)
 #endif
 }
 
+int bst_search(int key, struct node *cur)
+{
+    if (NULL==cur) return 0; /*not found*/
+    if (key == cur->data) return 1; /*found*/
+    return bst_search(key, (key > cur->data)? cur->right: cur->left);
+}
+
 void search(int v)
 {
+#if 0
     struct node *cur = root;
     printf("search %d: ", v);
     while (cur) {
@@ -59,9 +67,13 @@ void search(int v)
             printf("found\n");
             return;
         }
-        cur = (v > cur->data)? cur->left: cur->right;
+        cur = (v > cur->data)? cur->right: cur->left;
     }
     printf("not found\n");
+#else
+    printf("search %d: ", v);
+    if (bst_search(v, root)) printf("found\n"); else printf("not found\n");
+#endif
 }
 
 void preorder(struct node *cur)
@@ -72,16 +84,35 @@ void preorder(struct node *cur)
     preorder(cur->right);
 }
 
+void inorder(struct node *cur)
+{
+    if (NULL==cur) return;
+    preorder(cur->left);
+    preorder(cur->right);
+    printf("%d ", cur->data); /*visit*/
+}
+
+void postorder(struct node *cur)
+{
+    if (NULL==cur) return;
+    preorder(cur->left);
+    printf("%d ", cur->data); /*visit*/
+    preorder(cur->right);
+}
+
 typedef void (*callback)(int);
 callback bst[3] = { search,  insert, delete };
 
 int main(int argc, char **argv)
 {
     int i, j;
+    if (argc > 1) {
+        for (i=1; i<argc; i++) insert(atoi(argv[i]));
+    }
     while (1) {
-        printf("0. search 1. insert 2. delete 3. preorder\n");
+        printf("0. search 1. insert 2. delete 3. preorder 4. inorder 5. postorder\n");
         if (scanf("%d", &i)!=1) break;
-        if (i>3||i<0) continue;
+        if (i>5||i<0) continue;
         switch (i) {
         case 0: case 1:
             if (scanf("%d", &j)!=1) continue;
@@ -89,6 +120,14 @@ int main(int argc, char **argv)
             break;
         case 3:
             preorder(root);
+            printf("\n");
+            break;
+        case 4:
+            inorder(root);
+            printf("\n");
+            break;
+        case 5:
+            postorder(root);
             printf("\n");
             break;
         }
