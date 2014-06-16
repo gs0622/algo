@@ -19,7 +19,7 @@ int *create_array(int n)
 
 void print_array(int *p, int n)
 {
-	for (p;n>0;n--,p++) {
+	for (;p&&n>0;n--,p++) {
 		printf("%.2d%s", *p, ((n-1)>0)? " ":"\n");
 	}
 }
@@ -39,5 +39,6 @@ int main(int argc, char **argv)
 	print_array(p, n);
 	qsort(p, n, 4, cmp);
 	print_array(p, n);
+	free(p);
 	return 0;
 }

@@ -60,5 +60,6 @@ int main(int argc, char **argv)
 	//insertionsort(p, n);
     insertionsort(p, n);
 	print_array(p, n);
+	free(p);
 	return 0;
 }

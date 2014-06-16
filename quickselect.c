@@ -78,6 +78,7 @@ int main(int argc, char **argv)
     printf("sort\n");
 	qsort(p, n, 4, cmp);
 	print_array(p, n);
+	free(p);
 	return 0;
 }
 

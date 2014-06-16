@@ -9,18 +9,16 @@ int *create_array(int n)
 	p = malloc((sizeof(int))*n);
 	srand((unsigned int)time(NULL));
 	for (i=0; p && i<n; i++) {
-		p[i] = rand()%1000;
+		p[i] = rand()%100;
 	}
 	return p;
 }
 
 void print_array(int *p, int n)
 {
-#if 0
-	for (p;n>0;n--,p++) {
-		printf("%.3d%s", *p, ((n-1)>0)? " ":"\n");
+	for (;p&&n>0;n--,p++) {
+		printf("%.2d%s", *p, ((n-1)>0)? " ":"\n");
 	}
-#endif
 }
 
 void swap(int *p, int *q)
@@ -35,8 +33,8 @@ int bubblesort(int *p, int n)
 	int i, j;
 	for (i=n-1; i>0; i--)
 		for (j=0; j<i; j++) {
-			//if (p[j]>p[j+1]) swap(&p[j], &p[j+1]); /*ascending*/
-			if (p[j]<p[j+1]) swap(&p[j], &p[j+1]); /*descending*/
+			if (p[j]>p[j+1]) swap(&p[j], &p[j+1]); /*ascending*/
+			//if (p[j]<p[j+1]) swap(&p[j], &p[j+1]); /*descending*/
 		}
 }
 
@@ -48,6 +46,7 @@ int main(int argc, char **argv)
 	print_array(p, n);
 	bubblesort(p, n);
 	print_array(p, n);
+	free(p);
 	return 0;
 }
 
