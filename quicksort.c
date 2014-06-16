@@ -9,18 +9,16 @@ int *create_array(int n)
 	p = malloc((sizeof(int))*n);
 	srand((unsigned int)time(NULL));
 	for (i=0; p && i<n; i++) {
-		p[i] = rand()%1000;
+		p[i] = rand()%100;
 	}
 	return p;
 }
 
 void print_array(int *p, int n)
 {
-#if 0
-	for (p;n>0;n--,p++) {
-		printf("%.3d%s", *p, ((n-1)>0)? " ":"\n");
+	for (;p&&n>0;n--,p++) {
+		printf("%.2d%s", *p, ((n-1)>0)? " ":"\n");
 	}
-#endif
 }
 
 void swap(int *p, int *q)
@@ -62,6 +60,6 @@ int main(int argc, char **argv)
 	print_array(p, n);
 	quicksort(p, 0, n-1);
 	print_array(p, n);
+	free(p);
 	return 0;
 }
-
