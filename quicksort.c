@@ -31,18 +31,16 @@ void swap(int *p, int *q)
 int partition(int *p, int left, int right)
 {
 	int i, pivot, idx = left;
-
 	pivot = p[idx];
 	swap(&p[idx], &p[right]);
 	for (i=left; i<right; i++) {
-		if (p[i] < pivot) {
-			swap(&p[idx++], &p[i]);
-		}
+		if (p[i] < pivot) swap(&p[idx++], &p[i]);
 	}
 	swap(&p[right], &p[idx]);
 	return idx;
 }
 
+/*Quick osrt, avg=best=O(nlgn) time, wrost in O(n^2)*/
 void quicksort(int *p, int left, int right)
 {
 	int idx;
