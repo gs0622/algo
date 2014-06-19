@@ -88,16 +88,16 @@ void inorder(struct node *cur)
 {
     if (NULL==cur) return;
     preorder(cur->left);
-    preorder(cur->right);
     printf("%d ", cur->data); /*visit*/
+    preorder(cur->right);
 }
 
 void postorder(struct node *cur)
 {
     if (NULL==cur) return;
     preorder(cur->left);
-    printf("%d ", cur->data); /*visit*/
     preorder(cur->right);
+    printf("%d ", cur->data); /*visit*/
 }
 
 typedef void (*callback)(int);
