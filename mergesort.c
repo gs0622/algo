@@ -39,9 +39,19 @@ void mergesort(int *arr, int sz, int *tmp)
         mergesort(arr1, arr1sz, tmp);
         mergesort(arr2, arr2sz, tmp);
         merge(arr1, arr1sz, arr2, arr2sz, tmp);
+        //printf(" ->"), print_array(arr1, sz);
     }
 }
-
+#if 0
+int main(int argc, char **argv)
+{
+	int p[6] = { 1, 6, 5, 3, 4, 4}, q[6], n=6;
+	print_array(p, n);
+	mergesort(p, n, q);
+	print_array(p, n);
+	return 0;
+}
+#else
 int main(int argc, char **argv)
 {
 	int n, *p, *q;
@@ -53,3 +63,4 @@ int main(int argc, char **argv)
     free(p), free(q);
 	return 0;
 }
+#endif
