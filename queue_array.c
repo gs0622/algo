@@ -15,6 +15,10 @@ int empty(queue *q)
 int front(queue *q)
 {
     assert(q);
+    if (empty(q)) {
+        printf("queue empty\n");
+        return 0;
+    }
     return q->elements[q->head];
 }
 void push(queue *q, int val)
