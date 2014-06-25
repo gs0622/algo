@@ -19,17 +19,17 @@ long long profile_us(void (*foo)(int*, int), int *const arg1, const int arg2)
 }
 void print_array(int *p, int n)
 {
-	for (;p&&n>0;n--,p++) {
-		printf("%.2d%s", *p, ((n-1)>0)? " ":"\n");
-	}
+    for (;p&&n>0;n--,p++) {
+        printf("%.2d%s", *p, ((n-1)>0)? " ":"\n");
+    }
 }
 void swap(int *p, int *q)
 {
-	int tmp;
+    int tmp;
     assert(p&&q);
     tmp = *p;
-	*p = *q;
-	*q = tmp;
+    *p = *q;
+    *q = tmp;
 }
 /*shuffle with O(n) time complexity*/
 void shuffle(int a[], int n)
@@ -83,19 +83,19 @@ static void help(char *name)
 }
 int main(int argc, char **argv)
 {
-	int i, n, loop, *arr;
+    int i, n, loop, *arr;
     long long us;
     if (argc>1 && 0==strcmp(argv[1], "--help")) help(argv[0]);
-	n = (argc>1)? atoi(argv[1]) : 10;
-	loop = (argc>2)? atoi(argv[2]) : 100;
-	arr = malloc(sizeof(int)*n);
+    n = (argc>1)? atoi(argv[1]) : 10;
+    loop = (argc>2)? atoi(argv[2]) : 100;
+    arr = malloc(sizeof(int)*n);
     for (i=0;i<n;i++) arr[i] = i;
     for (i=0,us=0;i<loop;i++) us += profile_us(shuffle, arr, n);
     printf("HP's shuffle arr[%d] %d loops takes %lld us, avg in %3.2f ms\n", n, loop, us, (double)us/(double)loop);
     for (i=0,us=0;i<loop;i++) us += profile_us(getShuffleList, arr, n);
     printf("YT's shuffle arr[%d] %d loops takes %lld us, avg in %3.2f ms\n", n, loop, us, (double)us/(double)loop);
-	if (n<50) printf("arr[%d]=", n), print_array(arr, n);
+    if (n<50) printf("arr[%d]=", n), print_array(arr, n);
     free(arr);
-	return 0;
+    return 0;
 }
 
