@@ -28,9 +28,8 @@ void insert(int v)
 
 void delete(int v)
 {
-#if 0 /*TBD*/
-    struct node *cur = root, *parent = NULL;
-    int found = 0;
+    struct node *cur = root, *parent, *tmp;
+    int rightside, found = 0;
     printf("delete %d: ", v);
     while (cur) {
         if (v == cur->data) {
@@ -41,13 +40,27 @@ void delete(int v)
         cur = (v > cur->data)? cur->right: cur->left;
     }
     if (!found) {
-        printf("failed\n");
+        printf("not found\n");
         return;
     }
-    if (NULL == cur->left && NULL == cur->right) { /*leaf*/
-    
+    rightside = (cur->data > parent->data)? 1/*parent->right*/: 0/*parent->left*/;
+    if (NULL == cur->left && NULL == cur->right) { /*no child*/
+        if (rightside) parent->right = NULL;
+        else parent->left = NULL;
+    } else if (NULL == cur->left && NULL != cur->right) { /*one right child*/
+        if (rightside) parent->right = cur->right;
+        else parent->left = cur->right; 
+    } else if (NULL != cur->left && NULL == cur->right) { /*one left child*/
+        if (rightside) parent->right = cur->left;
+        else parent->left = cur->left; 
+    } else {
+        parent = cur, tmp = cur->left;
+        while (NULL != tmp->right) parent = tmp, tmp = tmp->right;
+        cur->data = tmp->data;
+        parent->right = tmp->left;
+        cur = tmp;
     }
-#endif
+    free(cur);
 }
 
 int bst_search(int key, struct node *cur)
