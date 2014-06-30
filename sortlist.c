@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
 struct node {
     int val;
     struct node *next;
@@ -63,15 +64,42 @@ void qsort_list(struct node *head)
     qsort(tmp, n, sizeof(int), cmp);
     for (n=0, p=head; p; p=p->next) p->val = tmp[n++];  /*put array back to list*/
 }
+static struct node *merge(struct node *p, struct node *q)
+{
+    struct node *r;
+    if (!p) return q;
+    if (!q) return p;
+    if (p->val > q->val) r = q, r->next = merge(q->next, p);
+    else r = p, r->next = merge(p->next, q);
+    return r;
+}
+void merge_sort(struct node **headref)
+{
+    struct node *slow, *fast, *head;
+    assert(headref);
+    head = *headref;
+    if (!head || !head->next) return;
+    slow = head, fast = head->next;
+    while (fast) {
+        fast = fast->next;
+        if (fast) slow = slow->next, fast = fast->next;
+    }
+    fast = slow->next, slow->next = NULL, slow = head;
+    merge_sort(&slow);
+    merge_sort(&fast);
+    *headref = merge(slow, fast);
+}
 int main(int argc, char **argv)
 {
-    struct node *head;
+    struct node *head, *tmp;
     int n = (argc>1)? atoi(argv[1]) : 10;
     srand((unsigned int)time(NULL));
-    head = create(n);
+    head = tmp = create(n);
     print_list(head);
     //selection_sort(head);
-    qsort_list(head);
-    print_list(head);
+    //qsort_list(head);
+    merge_sort(&tmp);
+    print_list(tmp);
+    free(head);
     return 0;
 }
