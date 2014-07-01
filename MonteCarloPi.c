@@ -3,7 +3,7 @@
 #include <time.h>
 int main(int argc, char *argv[])
 {
-    int i, c, n = (argc>1)? atoi(argv[1]): 100;
+    long long i, c, n = (argc>1)? atol(argv[1]): 100;
     double x, y;
     srand(time(NULL));
     for (i=0,c=0;i<n; i++) {
