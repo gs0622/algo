@@ -1,3 +1,4 @@
+/*for sorted array, using O(logn) to find specific value*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
