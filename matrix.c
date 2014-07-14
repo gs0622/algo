@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 void mprint(int *x, int row, int col)
 {
     int r, c;
@@ -7,6 +7,16 @@ void mprint(int *x, int row, int col)
         for (c=0;c<col;c++)
             printf("%d%s", *x++, c==(col-1)?"\n":" ");
 }
+int **make2darr(int row, int col)
+{
+    int **arr, i;
+    arr = malloc(row*sizeof(*arr));
+    for (i=0;i<row;i++) {
+        arr[i] = malloc(col*sizeof(**arr));
+    }
+    return arr;
+}
+
 /*Matrix addition*/
 void madd(int *x, int *y, int *z, int row, int col)
 {
@@ -32,6 +42,8 @@ int main(void)
     int c[2][3]={};
     int d[2][3]={{1,2,3},{0,-6,7}};
     int e[3][2]={};
+    int **f=make2darr(2, 3);
+    free(f);
     madd((int *)a, (int *)b, (int *)c, 2, 3);
     mprint((int *)c, 2, 3);
     printf("\n");
