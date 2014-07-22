@@ -18,7 +18,6 @@ static void strrev(char *p, char *q)
 }
 static void strswap(char *s)
 {
-    register char *p, *q;
     if (!strspace(s)) return;
     strrev(s, strend(s));
     strrev(s, strspace(s)-1);
