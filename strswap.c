@@ -1,5 +1,14 @@
 #include <stdio.h>
-
+static char *strend(char *s)
+{
+    while (*s) ++s;
+    return s-1;
+}
+static char *strspace(char *s)
+{
+    while (*s && *s!=' ') ++s;
+    return (s=='\0')? NULL: s;
+}
 static void strrev(char *p, char *q)
 {
     while (p < q) {
@@ -7,21 +16,14 @@ static void strrev(char *p, char *q)
         ++p, --q;
     }
 }
-
 static void strswap(char *s)
 {
     register char *p, *q;
-    for (p=s; *p && *p!=' '; ++p);
-    if (*p!=' ') return; /*no space*/
-    for (q=s; *q; ++q);  /*to tail*/
-    --q, strrev(s, q);
-    for (p=s; *p && *p!=' '; ++p);
-    *p='\0';
-    strrev(s, p-1);
-    strrev(p+1, q);
-    *p=' ';
+    if (!strspace(s)) return;
+    strrev(s, strend(s));
+    strrev(s, strspace(s)-1);
+    strrev(strspace(s)+1, strend(s));
 }
-
 int main(int argc, char *argv[])
 {
     if (1==argc) return 0;
