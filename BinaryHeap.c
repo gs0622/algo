@@ -64,7 +64,8 @@ void insert(heap *h, int val)
 {
     assert(h);
     h->data[h->size++] = val;
-#if 1 /*min-heap proprity queue*/
+//#define MINHEAP
+#ifdef MINHEAP /*min-heap proprity queue*/
     MinHeapify(h);
 #else
     MaxHeapify(h);
@@ -72,9 +73,17 @@ void insert(heap *h, int val)
 }
 int delete(heap *h)
 {
+    int root;
     assert(h);
-    return 0;
+    root = h->data[0];
+    h->data[0] = h->data[h->size-1];
+    h->size--;
+#ifdef MINHEAP /*min-heap proprity queue*/
     MinHeapify(h);
+#else
+    MaxHeapify(h);
+#endif
+    return root;
 }
 int main(void)
 {
