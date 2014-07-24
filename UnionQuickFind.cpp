@@ -36,14 +36,21 @@ class QuickFindUF
 
 int main(void)
 {
-    QuickFindUF u1(20);
+    QuickFindUF u1(10);
+    //u1.Trace();
+    //u1.Union(1, 2);
+    //u1.Trace();
+    //u1.Union(1, 9);
     u1.Trace();
-    u1.Union(1, 2);
+    u1.Union(4, 1);
+    u1.Union(5, 6);
+    u1.Union(6, 9);
+    u1.Union(0, 8);
+    u1.Union(2, 1);
+    u1.Union(9, 7);
     u1.Trace();
-    u1.Union(1, 9);
-    u1.Trace();
-    cout << "(2, 9): " << u1.IsConnected(2, 9) << endl;
-    cout << "(3, 9): " << u1.IsConnected(3, 9) << endl;
+    //cout << "(2, 9): " << u1.IsConnected(2, 9) << endl;
+    //cout << "(3, 9): " << u1.IsConnected(3, 9) << endl;
     return 0;
 }
 
