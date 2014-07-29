@@ -1,17 +1,19 @@
+/*print all permutation list*/
 #include <stdio.h>
 #include <stdlib.h>
 #define SWAP(x, y, t) ((t)=(x),(x)=(y),(y)=(t))
+static cnt = 0;
 void perm(char list[], int i, int n)
 {
     int j, k;
     if (i==n) {
         for (j=0;j<=n;j++) printf("%c", list[j]); 
-        printf(" ");
+        printf(" "), cnt++;
     } else {
         for (j=i;j<=n;j++) {
-            SWAP(list[i], list[j], k);
+            if (j!=i) SWAP(list[i], list[j], k);
             perm(list, i+1, n);
-            SWAP(list[i], list[j], k);
+            if (j!=i) SWAP(list[i], list[j], k);
         }
     }
 }
@@ -24,7 +26,7 @@ int main(int argc, char *argv[])
         int i;
         for (i=0;i<argc-1;i++) list[i]=argv[i+1][0];
         perm(list, 0, argc-2);
-        printf("\n");
+        printf(" total: %d\n", cnt);
         free(list);
     }
     return 0;
