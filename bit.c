@@ -23,7 +23,7 @@ int ClearMSB(int val, int i)
 /*Given val, clear from LSB to bit i*/
 int ClearLSB(int val, int i)
 {
-    int mask = ~((1<<i)-1);
+    int mask = ~((1<<(i+1))-1);
     return val & mask;
 }
 int main(void)
@@ -36,8 +36,8 @@ int main(void)
     printf("ClearBit(1)=%.8x\n", x);
     x=ClearMSB(x, 28);
     printf("ClearMSB(28)=%.8x\n", x);
-    x=ClearLSB(x, 8);
-    printf("ClearLSB(8)=%.8x\n", x);
+    x=ClearLSB(x, 7);
+    printf("ClearLSB(7)=%.8x\n", x);
     return 0;
 }
 
