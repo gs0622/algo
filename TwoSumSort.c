@@ -8,7 +8,8 @@ int cmp(const void *p, const void *q)
 {
     return (*(int *)p - *(int *)q);
 }
-void TwoSumLinear(int arr[], int sz, int sum)
+/*time: avg: O(nlgn), worse: O(n^2)*/
+void TwoSumSort(int arr[], int sz, int sum)
 {
     int i, j, k;
     qsort(arr, sz, sizeof(int), cmp);
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     arr = malloc(sizeof(int)*n);
     assert(arr);
     for (i = 0; i < n; i++) arr[i] = atoi(argv[i+1]);
-    TwoSumLinear(arr, n, sum);
+    TwoSumSort(arr, n, sum);
     free(arr);
     return 0;
 }
