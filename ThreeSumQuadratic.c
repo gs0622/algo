@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     qsort(arr, n, sizeof(int), cmp);
     //for (i=0;i<n;i++) printf("%d%s", arr[i], (i==n-1)?"\n":" ");
     ThreeSumQuadratic(arr, n);
+    free(arr);
     return 0;
 }
 

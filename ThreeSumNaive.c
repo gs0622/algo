@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 /*naive solution, time: O(n^3)*/
-int ThreeSumNaive(int arr[], int n)
+void ThreeSumNaive(int arr[], int n)
 {
     int i, j, k, *p=arr;
     for (i=0;i<n-2;i++)
@@ -13,7 +13,7 @@ int ThreeSumNaive(int arr[], int n)
 }
 int main(int argc, char *argv[])
 {
-    int *arr, i, j, k, n;
+    int *arr, i, n;
     if (1==argc) return 0;
     n = argc-1;
     if (n<3) return 0;
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     for (i=0;i<n;i++) arr[i]=atoi(argv[i+1]);
     //for (i=0;i<n;i++) printf("%d%s", arr[i], (i==n-1)?"\n":" ");
     ThreeSumNaive(arr, n);
+    free(arr);
     return 0;
 }
 
