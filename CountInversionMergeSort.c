@@ -9,11 +9,12 @@ int Merge(int arr1[], int s1, int arr2[], int s2, int aux[])
     int c, i, j, k;
     c = i = j = k = 0;
     while (i < s1 && j < s2) {
-        //aux [k++] = arr1[i] < arr2[j]? arr1[i++]: arr2[j++], c+=s1-i; 
         if (arr1[i] < arr2[j])
-            arr1[i++];
-        else
-            arr2[j++], c+=s1-i; 
+            aux[k++] = arr1[i++];
+        else {
+            aux[k++] = arr2[j++];
+            c+=s1-i; /*since arr1[i] are all greater than arr2[j]*/
+        }
     }
     while (i < s1) aux[k++] = arr1[i++];
     while (j < s2) aux[k++] = arr2[j++];
@@ -48,7 +49,6 @@ int main(int argc, char *argv[])
     arr = malloc(sizeof(int)*n);
     for (i = 0; i < n; i++) arr[i] = atoi(argv[i + 1]);
     printf("%d\n", CountInversion(arr, n));
-    for (i = 0; i < n; i++) printf("%d ", arr[i]);
     return 0;
 }
 
