@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
+#include <omp.h>
 
 static const unsigned char BRT[] = { /*BitRevertTable256*/
 0x00, 0x80, 0x40, 0xC0, 0x20, 0xA0, 0x60, 0xE0, 0x10, 0x90, 0x50, 0xD0, 0x30, 0xB0, 0x70, 0xF0,
@@ -65,38 +67,35 @@ int bitrev3(int n)
 int main(int argc, char *argv[])
 {
     int i, n;
-    struct timespec s, e;
-    long long us;
-    int v[1000];
-    for (i = 0; i < 1000; i++) v[i] = rand();
-    clock_gettime(CLOCK_MONOTONIC, &s);
-    for (i = 0; i < 1000; i++) {
+    double s, e;
+#define DIM     100000000
+    int *v = malloc(DIM*sizeof(int));
+    assert(v);
+    for (i = 0; i < DIM; i++) v[i] = rand();
+    s = omp_get_wtime();
+    for (i = 0; i < DIM; i++) {
         n = v[i];
         bitrev1(n);
     }
-    clock_gettime(CLOCK_MONOTONIC, &e);
-    us = (e.tv_sec - s.tv_sec) * 1000000;
-    us += (e.tv_nsec - s.tv_nsec)/1000;
-    printf ("%lld us\n", us);
+    e = omp_get_wtime();
+    printf ("%lf sec\n", e-s);
 
-    clock_gettime(CLOCK_MONOTONIC, &s);
-    for (i = 0; i < 1000; i++) {
+    s = omp_get_wtime();
+    for (i = 0; i < DIM; i++) {
         n = v[i];
         bitrev2(n);
     }
-    clock_gettime(CLOCK_MONOTONIC, &e);
-    us = (e.tv_sec - s.tv_sec) * 1000000;
-    us += (e.tv_nsec - s.tv_nsec)/1000;
-    printf ("%lld us\n", us);
+    e = omp_get_wtime();
+    printf ("%lf sec\n", e-s);
 
-    clock_gettime(CLOCK_MONOTONIC, &s);
-    for (i = 0; i < 1000; i++) {
+    s = omp_get_wtime();
+    for (i = 0; i < DIM; i++) {
         n = v[i];
         bitrev3(n);
     }
-    clock_gettime(CLOCK_MONOTONIC, &e);
-    us = (e.tv_sec - s.tv_sec) * 1000000;
-    us += (e.tv_nsec - s.tv_nsec)/1000;
-    printf ("%lld us\n", us);
+    e = omp_get_wtime();
+    printf ("%lf sec\n", e-s);
+
+    free(v);
     return 0;
 }
