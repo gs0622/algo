@@ -33,7 +33,7 @@ char *itob(int n)
     return buf;
 }
 
-int bitrev1(int n)
+int bitrev1(register int n)
 {
     n = (n & 0xaaaaaaaa) >> 1 | (n & 0x55555555) << 1;
     n = (n & 0xcccccccc) >> 2 | (n & 0x33333333) << 2;
@@ -66,7 +66,8 @@ int bitrev3(int n)
 
 int main(int argc, char *argv[])
 {
-    int i, n;
+    int i;
+    volatile int n;
     double s, e;
 #define DIM     100000000
     int *v = malloc(DIM*sizeof(int));
@@ -75,26 +76,29 @@ int main(int argc, char *argv[])
     s = omp_get_wtime();
     for (i = 0; i < DIM; i++) {
         n = v[i];
-        bitrev1(n);
+        n = bitrev1(n);
     }
     e = omp_get_wtime();
-    printf ("%lf sec\n", e-s);
+    printf ("%f sec\n", e-s);
+    fflush(stdout);
 
     s = omp_get_wtime();
     for (i = 0; i < DIM; i++) {
         n = v[i];
-        bitrev2(n);
+        n = bitrev2(n);
     }
     e = omp_get_wtime();
-    printf ("%lf sec\n", e-s);
+    printf ("%f sec\n", e-s);
+    fflush(stdout);
 
     s = omp_get_wtime();
     for (i = 0; i < DIM; i++) {
         n = v[i];
-        bitrev3(n);
+        n = bitrev3(n);
     }
     e = omp_get_wtime();
-    printf ("%lf sec\n", e-s);
+    printf ("%f sec\n", e-s);
+    fflush(stdout);
 
     free(v);
     return 0;
