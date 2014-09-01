@@ -18,6 +18,16 @@ int popcount1(uint64_t x)
     x = (x & m32) + ((x >> 16) & m32);
     return x;
 }
+int popcount2(uint64_t x)
+{
+    x -= ((x >> 1) & m1);
+    x = (x & m2) + ((x >> 2) & m2);
+    x = (x + (x >> 4)) & m4;
+    x += x >> 8;
+    x += x >> 16;
+    x += x >> 32;
+    return x & 0x7f;
+}
 int main(void)
 {
     char str[128] = {};
@@ -25,7 +35,8 @@ int main(void)
     while (scanf("%s", str) != EOF) {
         v = strtoull(str, NULL, 10);
         printf("%llu\n", v);
-        printf("%d\n", popcount1(v));
+        printf("1: %d\n", popcount1(v));
+        printf("2: %d\n", popcount2(v));
     }
     return 0;
 }
