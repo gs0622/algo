@@ -12,11 +12,11 @@ static void fail(const char *pat, int n)
 
     failure[0]=-1;
 
-    for (j=1;j<n;j++) {
+    for (j = 1; j < n; j++) {
         i = failure[j-1];
-        while (pat[j]!=pat[i+1] && i>=0)
+        while (pat[j] !=bpat[i+1] && i >= 0)
             i = failure[i];
-        if (pat[j]==pat[i+1]) failure[j]=i+1;
+        if (pat[j] == pat[i+1]) failure[j]=i+1; 
         else failure[j]=-1;
     }
 }
