@@ -7,8 +7,11 @@ static int *failure = NULL;
 static void fail(const char *pat, int n)
 {
     int i, j;
+
     assert(failure);
+
     failure[0]=-1;
+
     for (j=1;j<n;j++) {
         i = failure[j-1];
         while (pat[j]!=pat[i+1] && i>=0)
