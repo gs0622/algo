@@ -1,30 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #define MAX 10
+
 typedef struct {
     int data[MAX];
     int size; /*element size*/
 } heap;
+
 static void swap(int *p, int *q)
 {
     int tmp;
     assert(p&&q);
     tmp=*p, *p=*q, *q=tmp;
 }
+
 static int less(int x, int y)
 {
     return (x<y)? 1: 0;
 }
+
 static int greater(int x, int y)
 {
     return (x>y)? 1: 0;
 }
+
 static int empty(heap *h)
 {
     assert(h);
     return (0==h->size)? 1/*true*/: 0/*false*/;
 }
+
 static void show(heap *h)
 {
     int i;
@@ -32,6 +39,7 @@ static void show(heap *h)
     for (i=0;i<h->size;i++) printf("%d ", h->data[i]);
     printf("\n");
 }
+
 static void MinHeapify(heap *h)
 {
     int i, left, right;
@@ -46,6 +54,7 @@ static void MinHeapify(heap *h)
             swap(&h->data[i-1], &h->data[right-1]);
     }
 }
+
 static void MaxHeapify(heap *h)
 {
     int i, left, right;
@@ -60,6 +69,7 @@ static void MaxHeapify(heap *h)
             swap(&h->data[i-1], &h->data[right-1]);
     }
 }
+
 void insert(heap *h, int val)
 {
     assert(h);
@@ -71,6 +81,7 @@ void insert(heap *h, int val)
     MaxHeapify(h);
 #endif
 }
+
 int delete(heap *h)
 {
     int root;
@@ -85,6 +96,7 @@ int delete(heap *h)
 #endif
     return root;
 }
+
 int main(void)
 {
     int i, j;
