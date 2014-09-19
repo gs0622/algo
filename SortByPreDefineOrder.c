@@ -13,10 +13,11 @@ static int cmp(const void *p, const void *q)
     return (*(int *)p) - (*(int *)q);
 }
 
+/*O(n*m)*/
 void SortByOrder1(void)
 {
-    int a1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}; 
-    int a2[] = {2, 1, 8, 3};
+    int a1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}; /*sz=m*/
+    int a2[] = {2, 1, 8, 3}; /*sz=n*/
     int i, j, k;
     for (i = k = 0; i < sizeof(a2)/sizeof(int); i++) {
         for (j = 0; j < sizeof(a1)/sizeof(int); j++) {
