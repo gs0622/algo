@@ -13,7 +13,7 @@ static int cmp(const void *p, const void *q)
     return (*(int *)p) - (*(int *)q);
 }
 
-int main(void)
+void SortByOrder1(void)
 {
     int a1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}; 
     int a2[] = {2, 1, 8, 3};
@@ -26,5 +26,11 @@ int main(void)
     qsort(&a1[k], sizeof(a1)/sizeof(int)-k, sizeof(int), cmp);
     for (i = 0; i < sizeof(a1)/sizeof(int); i++) printf("%d ", a1[i]);
     puts("");
+}
+
+int main(void)
+{
+    SortByOrder1();
+    return 0;
 }
 
