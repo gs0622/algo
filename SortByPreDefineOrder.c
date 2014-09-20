@@ -32,7 +32,7 @@ void SortByOrder1(void)
 int BinarySearch(int arr[], int left, int right, int val)
 {
     int mid = (left + right) / 2, tmp = arr[mid];
-    if (left > right) return 0; /*not found*/
+    if (left > right) return -1; /*not found*/
     if (tmp == val) return mid; /*found*/
     return (tmp > val)? BinarySearch(arr, left, mid-1, val):
         BinarySearch(arr, mid+1, right, val);
@@ -44,18 +44,23 @@ void SortByOrder2(void)
     int a2[] = {2, 1, 8, 3}; /*sz=n*/
     const int s1 = sizeof(a1)/sizeof(int);
     const int s2 = sizeof(a2)/sizeof(int);
-    int i, j, k, x;
+    int i, j, k, r;
     qsort(a1, s1, sizeof(int), cmp);
     for (i = j = k = 0; i < s2; i++) {
-        while (x = BinarySearch(&a1[j], j, s1, a2[k])) {
-            swap(&a1[j], &a1[x]), j++;
+        while (-1 < (r = BinarySearch(&a1[j], 0, s1-j, a2[i]))) {
+            if (a1[j] == a1[r+j]) j++;
+            else swap(&a1[j], &a1[r+j]), j++;
         }
+        qsort(&a1[j], s1-j, sizeof(int), cmp);
     }
+    for (i = 0; i < s1; i++) printf("%d ", a1[i]);
+    puts("");
 }
 
 int main(void)
 {
     SortByOrder1();
+    SortByOrder2();
     return 0;
 }
 
