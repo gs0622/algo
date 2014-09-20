@@ -29,6 +29,30 @@ void SortByOrder1(void)
     puts("");
 }
 
+int BinarySearch(int arr[], int left, int right, int val)
+{
+    int mid = (left + right) / 2, tmp = arr[mid];
+    if (left > right) return 0; /*not found*/
+    if (tmp == val) return mid; /*found*/
+    return (tmp > val)? BinarySearch(arr, left, mid-1, val):
+        BinarySearch(arr, mid+1, right, val);
+}
+
+void SortByOrder2(void)
+{
+    int a1[] = {2, 1, 2, 5, 7, 1, 9, 3, 6, 8, 8}; /*sz=m*/
+    int a2[] = {2, 1, 8, 3}; /*sz=n*/
+    const int s1 = sizeof(a1)/sizeof(int);
+    const int s2 = sizeof(a2)/sizeof(int);
+    int i, j, k, x;
+    qsort(a1, s1, sizeof(int), cmp);
+    for (i = j = k = 0; i < s2; i++) {
+        while (x = BinarySearch(&a1[j], j, s1, a2[k])) {
+            swap(&a1[j], &a1[x]), j++;
+        }
+    }
+}
+
 int main(void)
 {
     SortByOrder1();
