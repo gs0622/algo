@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 void swap1(int *x, int *y)
 {
     assert(x && y);
@@ -8,6 +9,7 @@ void swap1(int *x, int *y)
     *y = *x - *y; /*(x+y)-y*/
     *x = *x - *y; /*(x+y)-x*/
 }
+
 void swap2(int *x, int *y)
 {
     assert(x && y);
@@ -15,6 +17,7 @@ void swap2(int *x, int *y)
     *y = *x / *y; /*(x*y)/y*/
     *x = *x / *y; /*(x*y)/x*/
 }
+
 void swap3(int *x, int *y)
 {
     assert(x && y);
@@ -23,6 +26,7 @@ void swap3(int *x, int *y)
     *y = *x ^ *y; /*(x^y)^y*/
     *x = *x ^ *y; /*(x^y)^x*/
 }
+
 int main(int argc, char *argv[])
 {
     int a, b;
