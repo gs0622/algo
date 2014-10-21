@@ -20,20 +20,27 @@ struct node {
 
 #define dprintf(...)    printf(__VA_ARGS__)
 
-void queue(struct node *head, int data)
+struct node *queue(struct node *head, int data)
 {
-    struct node *last = head, *cur = calloc(1, sizeof(struct node));
-    assert(cur && head);
-    while (head->next) last = head, head = head->next;
-    cur->data = data, last->next = cur;
-    printf("%d ", data);
+    struct node *cur, *last, *tmp = calloc(1, sizeof(struct node));
+    assert(tmp);
+    tmp->data = data;
+    if (NULL == head)
+        head = tmp;
+    else {
+        cur = last = head;
+        while (cur->next) last = cur, cur = cur->next;
+        cur->next = tmp;
+    }
+    printf("q:%d-> ", data);
+    return head;
 }
 
 void free_queue(struct node *head)
 {
     struct node *cur = head;
-    while (head->next) {
-        printf("%d ", head->data);
+    while (head) {
+        printf("f:%d-> ", head->data);
         head = head->next, free(cur), cur = head;
     }
 }
@@ -41,11 +48,11 @@ void free_queue(struct node *head)
 int main(int argc, char **argv)
 {
     int i, data;
-    struct node *head = calloc(1, sizeof(struct node));
+    struct node *head = NULL;
     for (i = 1; i < argc; i++) {
         data = atoi(argv[i]);
         //printf("%d ", data);
-        queue(head, data);
+        head = queue(head, data);
     }
     free_queue(head);
     return 0;
