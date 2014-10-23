@@ -40,7 +40,7 @@ void free_queue(struct node *head)
 {
     struct node *cur = head;
     while (head) {
-        printf("f:%d-> ", head->data);
+        printf("f:%d%s", head->data, head->next? "-> ": "\n");
         head = head->next, free(cur), cur = head;
     }
 }
@@ -54,6 +54,7 @@ int main(int argc, char **argv)
         //printf("%d ", data);
         head = queue(head, data);
     }
+    puts("");
     free_queue(head);
     return 0;
 }
