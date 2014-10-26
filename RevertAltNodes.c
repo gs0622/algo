@@ -10,7 +10,6 @@ Output List: 12->16->20->18->14
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 #include <assert.h>
 
 struct node {
@@ -18,7 +17,30 @@ struct node {
     struct node *next;
 };
 
-#define dprintf(...)    printf(__VA_ARGS__)
+struct queue {
+    struct node *front;
+    struct node *rear;
+    int size;
+};
+
+int queue_size(quque *q)
+{
+    return q->size;
+}
+
+int quque_empty(queue *q)
+{
+    return (q->size == 0)? 1/*true*/: 0;
+}
+
+void queue_push(queue *q, int v)
+{
+    struct node *tmp = calloc(1, sizeof(struct node));
+    tmp->data = v;
+    if (queme_empty(q)) q->front = q->rear = tmp;
+    else q->rear->next = tmp, q->rear = tmp; /*old tail to new*/
+    q->size += 1;
+}
 
 struct node *queue(struct node *head, int data)
 {
