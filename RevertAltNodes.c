@@ -15,7 +15,7 @@ Output List: 12->16->20->18->14
 struct node {
     int data;
     struct node *next;
-};
+} node;
 
 struct queue {
     struct node *front;
@@ -23,23 +23,38 @@ struct queue {
     int size;
 };
 
-int queue_size(quque *q)
+int queue_size(struct queue *q)
 {
     return q->size;
 }
 
-int quque_empty(queue *q)
+int queue_empty(struct queue *q)
 {
     return (q->size == 0)? 1/*true*/: 0;
 }
 
-void queue_push(queue *q, int v)
+void queue_push(struct queue *q, int v)
 {
     struct node *tmp = calloc(1, sizeof(struct node));
     tmp->data = v;
-    if (queme_empty(q)) q->front = q->rear = tmp;
+	printf("q:%d-> ", v);
+    if (queue_empty(q)) q->front = q->rear = tmp;
     else q->rear->next = tmp, q->rear = tmp; /*old tail to new*/
     q->size += 1;
+}
+
+int queue_pop(struct queue *q, int *p)
+{
+	struct node *tmp;
+	if (queue_empty(q)) return -1;
+	tmp = q->front;
+	if (1 == q->size) q->front = q->rear = NULL;
+	else q->front = q->front->next;
+	printf("f:%d-> ", tmp->data);
+	*p = tmp->data;
+	q->size -= 1;
+	free(tmp);
+	return 0;
 }
 
 struct node *queue(struct node *head, int data)
@@ -70,14 +85,17 @@ void free_queue(struct node *head)
 int main(int argc, char **argv)
 {
     int i, data;
-    struct node *head = NULL;
+    //struct node *head = NULL;
+	struct queue q = {};
     for (i = 1; i < argc; i++) {
         data = atoi(argv[i]);
         //printf("%d ", data);
-        head = queue(head, data);
+        //head = queue(head, data);
+		queue_push(&q, data);
     }
     puts("");
-    free_queue(head);
+    //free_queue(head);
+	while (0 < q.size) queue_pop(&q, &data);
     return 0;
 }
 
