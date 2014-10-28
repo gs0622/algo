@@ -23,6 +23,11 @@ struct queue {
     int size;
 };
 
+struct stack {
+    struct node *top;
+    int size;
+};
+
 int queue_size(struct queue *q)
 {
     return q->size;
@@ -30,7 +35,7 @@ int queue_size(struct queue *q)
 
 int queue_empty(struct queue *q)
 {
-    return (q->size == 0)? 1/*true*/: 0;
+    return (0 == q->size)? 1/*true*/: 0;
 }
 
 void queue_push(struct queue *q, int v)
@@ -55,6 +60,29 @@ int queue_pop(struct queue *q, int *p)
 	q->size -= 1;
 	free(tmp);
 	return 0;
+}
+
+int stack_size(struct stack *s)
+{
+    return s->size;
+}
+
+int stack_empty(struct stack *s)
+{
+    return (0 == s->size)? 1/*true*/: 0;
+}
+
+void stack_push(struct stack *s, int v)
+{
+    struct node *tmp = calloc(1, sizeof(struct node));
+    tmp->data = v;
+    s->top->next = tmp; s->top = tmp;
+}
+
+int stack_pop(struct stack *s, int *p)
+{
+    // TBD
+    return 0;
 }
 
 struct node *queue(struct node *head, int data)
