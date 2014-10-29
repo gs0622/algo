@@ -42,7 +42,7 @@ void queue_push(struct queue *q, int v)
 {
     struct node *tmp = calloc(1, sizeof(struct node));
     tmp->data = v;
-	printf("q:%d-> ", v);
+	//printf("qi:%d-> ", v);
     if (queue_empty(q)) q->front = q->rear = tmp;
     else q->rear->next = tmp, q->rear = tmp; /*old tail to new*/
     q->size += 1;
@@ -55,11 +55,21 @@ int queue_pop(struct queue *q, int *p)
 	tmp = q->front;
 	if (1 == q->size) q->front = q->rear = NULL;
 	else q->front = q->front->next;
-	printf("f:%d-> ", tmp->data);
+	//printf("qo:%d-> ", tmp->data);
 	*p = tmp->data;
 	q->size -= 1;
 	free(tmp);
 	return 0;
+}
+
+void queue_show(struct queue *q)
+{
+    struct node *p = q->front;
+    for (p = q->front; ; p = p->next) {
+        printf("%d%s", p->data, p->next? " ": "");
+        if (!p->next) break;
+    }
+    puts("");
 }
 
 int stack_size(struct stack *s)
@@ -75,13 +85,20 @@ int stack_empty(struct stack *s)
 void stack_push(struct stack *s, int v)
 {
     struct node *tmp = calloc(1, sizeof(struct node));
-    tmp->data = v;
-    s->top->next = tmp; s->top = tmp;
+	//printf("si:%d-> ", v);
+    tmp->data = v, tmp->next = s->top;
+    s->top = tmp, s->size += 1;
 }
 
 int stack_pop(struct stack *s, int *p)
 {
-    // TBD
+    struct node *tmp;
+    if (stack_empty(s)) return -1;
+    tmp = s->top;
+	//printf("so:%d-> ", tmp->data);
+    *p = tmp->data;
+    s->top = tmp->next, s->size -= 1;
+    free(tmp);
     return 0;
 }
 
@@ -113,17 +130,26 @@ void free_queue(struct node *head)
 int main(int argc, char **argv)
 {
     int i, data;
-    //struct node *head = NULL;
 	struct queue q = {};
+	struct queue r = {};
+	struct stack s = {};
     for (i = 1; i < argc; i++) {
         data = atoi(argv[i]);
-        //printf("%d ", data);
-        //head = queue(head, data);
 		queue_push(&q, data);
     }
-    puts("");
+    while (!queue_empty(&q)) {
+        queue_pop(&q, &data);
+        queue_push(&r, data);
+        if (0 == queue_pop(&q, &data))
+            stack_push(&s, data);
+    }
+    while (!stack_empty(&s)) {
+        stack_pop(&s, &data);
+        queue_push(&r, data);
+    }
     //free_queue(head);
-	while (0 < q.size) queue_pop(&q, &data);
+    queue_show(&r);
+	while (!queue_empty(&r)) queue_pop(&r, &data);
     return 0;
 }
 
