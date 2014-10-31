@@ -13,3 +13,17 @@ struct queue {
     struct node *front;
     struct node *back;
 };
+
+void size(struct queue *q)
+{}
+void empty(struct queue *q)
+{}
+int front(struct queue *q)
+{ return 0; }
+int back(struct queue *q)
+{ return 0; }
+void push(struct queue *q, int v)
+{}
+void pop(struct queue *q)
+{}
+
