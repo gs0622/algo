@@ -25,11 +25,11 @@ int empty(struct queue *q)
 }
 int front(struct queue *q)
 {
-    return 0;
+    return q->front->data;
 }
 int back(struct queue *q)
 {
-    return 0;
+    return q->back->data;
 }
 void push(struct queue *q, int v)
 {
@@ -43,5 +43,12 @@ void push(struct queue *q, int v)
     q->size += 1;
 }
 void pop(struct queue *q)
-{}
+{
+    struct node *tmp = q->front;
+    if (empty(q)) return;
+    else if (1 == size(q)) q->front = q->back = NULL;
+    else q->front = q->front->next;
+    q->size -= 1;
+    free(tmp);
+}
 
