@@ -69,15 +69,20 @@ void show(struct queue *q)
 int main(void)
 {
     struct queue q = {};
-    push(&q, 1);
-    push(&q, 7);
-    push(&q, 2);
+    push(&q, 1); /*push 1*/
+    push(&q, 7); /*push 7*/
+    push(&q, 2); /*push 2*/
+    push(&q, 8); /*push 8*/
     show(&q);
     printf("front: %d, back=%d, pop\n", front(&q), back(&q));
-    pop(&q);
-    printf("front: %d, back=%d, pop x2\n", front(&q), back(&q));
-    pop(&q);
-    pop(&q);
+    pop(&q);    /*pop 1*/
+    show(&q);
+    printf("front: %d, back=%d, pop x3\n", front(&q), back(&q));
+    pop(&q);    /*pop 7*/
+    show(&q);
+    pop(&q);    /*pop 2*/
+    show(&q);
+    pop(&q);    /*pop 8*/
     show(&q);
     return 0;
 }
