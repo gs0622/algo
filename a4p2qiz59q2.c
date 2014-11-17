@@ -9,6 +9,38 @@ struct node {
 
 #define VERT(x)  (x-'A')
 
+struct queue {
+    struct node *front;
+    struct node *back;
+    int size;
+};
+
+int size(struct queue *q) { return q->size; }
+
+int empty(struct queue *q) { return (0 == size(q)); }
+
+int front(struct queue *q) { return q->front->v; }
+
+void push(struct queue *q, struct node *r)
+{
+    struct node *p = malloc(sizeof(struct node));
+    *p = *r;
+    //printf("push %d\n", p->v);
+    if (empty(q)) q->front = q->back = p;
+    else q->back->next = p, q->back = p;
+    q->size += 1;
+}
+
+void pop(struct queue *q)
+{
+    struct node *p = q->front;
+    q->size -= 1;
+    if (empty(q)) q->back = q->front = NULL;
+    else q->front = p->next;
+    //printf("pop %d\n", p->v);
+    free(p);
+}
+
 void list(struct node *p)
 {
     if (!p) return;
@@ -17,11 +49,29 @@ void list(struct node *p)
     puts("");
 }
 
+void bfs(struct node *s, struct node *vert)
+{
+    struct queue q = {};
+    int visit[8] = {};
+    push(&q, s);
+    while (!empty(&q)) {
+        int v = front(&q);
+        pop(&q);
+        if (0 == visit[v]) {
+            struct node *p = &vert[v];
+            printf("%c ", v + 'A');
+            visit[v] = 1;
+            while (p->next)
+                push(&q, p->next), p = p->next;
+        }
+    }
+}
+
 int main(void)
 {
     int i;
     struct node vert[8] = {}; /*A-H*/
-    struct node edge[28] = {};
+    struct node edge[20] = {};
     for (i = 0; i < 8; i++) vert[i].v = VERT('A'+i);
     edge[0].v = VERT('F'), edge[0].next = NULL;
     vert[0].next = &edge[0]; /*A: F*/
@@ -59,8 +109,8 @@ int main(void)
     edge[19].v = VERT('D'), edge[19].next = NULL;
     vert[7].v = VERT('H'), vert[7].next = &edge[19]; /*H: D*/
 
-    if (0) {
-        //bfs(&vert[0], vert);
+    if (1) {
+        bfs(&vert[0], vert);
         puts("");
     } else {
         int i;
