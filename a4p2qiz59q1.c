@@ -1,4 +1,4 @@
-/*q59, sees=676773*/
+/*quiz59 q1, sees=676773*/
 #include <stdio.h>
 #include <stdlib.h>
 
