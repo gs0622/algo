@@ -1,8 +1,10 @@
 /*q59, sees=676773*/
 #include <stdio.h>
+#include <stdlib.h>
 
 struct node {
     int v;
+    int visit;
     struct node *next;
 };
 
@@ -16,9 +18,16 @@ void list(struct node *p)
     puts("");
 }
 
-void dfs(struct node *p)
+void dfs(struct node *s, struct node *vert)
 {
-    /*TBD*/
+    struct node *p = &vert[s->v];
+    if (1 == p->visit) return;
+    printf("%c ", p->v + 'A');
+    p->visit = 1;
+    while (p->next) {
+        dfs(&vert[p->next->v], vert);
+        p = p->next;
+    }
 }
 
 int main(void)
@@ -58,7 +67,11 @@ int main(void)
 
     edge[17].v = VERT('G'), edge[17].next = NULL;
     vert[7].v = VERT('H'), vert[7].next = &edge[17]; /*H: G*/
+
     if (1) {
+        dfs(&vert[0], vert);
+        puts("");
+    } else {
         int i;
         for (i = 0; i < 8; i++) list(&vert[i]);
     }
