@@ -3,11 +3,9 @@
 
 float mysqrt(int val)
 {
-    int i, j;
     float sqrt, old;
-    for (i = 1; i < val; i++) if (i*i > val) break;
-    sqrt = (float)(i);
-    for (j = 0; ; j++) {
+    sqrt = 1;
+    while (1) {
         sqrt = (sqrt + val / sqrt) / 2; /*Newton's method*/
         if (old == sqrt) break; else old = sqrt;
     }
