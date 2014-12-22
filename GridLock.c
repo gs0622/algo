@@ -22,8 +22,9 @@ void dfs(int s)
     visit[s] = 1;
     for (i = 0; i < 9; i++) {
         if (adj[s][i] == 1 && !visit[i])
-            dfs(i), pattern++;
+            pattern++, dfs(i);
     }
+    visit[s] = 0;
 }
 
 int main(int argc, char **argv)
