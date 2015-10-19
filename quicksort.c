@@ -30,6 +30,20 @@ void swap(int *p, int *q)
 
 int partition(int *p, int left, int right)
 {
+/* |    <= V  | V |   >= V    |
+ * left         j             right
+ */
+#if 1
+	int i = left, j = right+1, pivot = p[left];
+    while (1) {
+        while (p[++i] < pivot) if (i == right) break;
+        while (p[--j] > pivot) if (j == left) break;
+        if (i >= j) break;
+        swap(&p[i],  &p[j]); 
+    }
+    swap(&p[left], &p[j]);
+    return j;
+#else
 	int i, pivot, idx = left;
 	pivot = p[idx];
 	swap(&p[idx], &p[right]);
@@ -38,6 +52,7 @@ int partition(int *p, int left, int right)
 	}
 	swap(&p[right], &p[idx]);
 	return idx;
+#endif
 }
 
 /*Quick osrt, avg=best=O(nlgn) time, wrost in O(n^2)*/
