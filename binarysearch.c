@@ -42,10 +42,10 @@ int binarysearch(int *p, int n, int v)
 #else
 int binsearch(int *p, int left, int right, int v)
 {
-    int mid = (left + right) / 2, tmp = p[mid];
-	if (left > right) return 0;
-    if (tmp == v) return 1;
-    else if (tmp > v) return binsearch(p, left, mid-1, v);
+	if (left > right) return -1;
+    int imid = (left + right) / 2, mid = p[imid];
+    if (mid == v) return imid;
+    else if (mid > v) return binsearch(p, left, imid-1, v);
     else return binsearch(p, mid+1, right, v);
 }
 
@@ -65,7 +65,10 @@ int main(int argc, char **argv)
 	qsort(p, n, 4, cmp);
 	print_array(p, n);
     while (scanf("%d", &v)!=EOF) {
-        printf("%d %s\n", v, binarysearch(p, n, v)? "found":"not found");
+        int idx = binarysearch(p, n, v);
+        printf("%d %s", v, (idx!=-1)? "found":"not found", idx);
+        if (idx != -1) printf(" at index %d\n", idx);
+        else puts("");
     }
 	return 0;
 }
