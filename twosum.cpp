@@ -19,32 +19,42 @@ void twosum(int arr[], int sz, int sum)
         else negative[arr[i] * (-1)] = 1;
     }
 }
-int arr[MAX];
+long arr[MAX];
 int main(int argc, char *argv[])
 {
-    int i, j, n, c;
+    int i, j, c, d;
+    long n;
     const int left = -10000, right = 10000;
-    std::unordered_map<int, int> m;
+    std::unordered_map<long, int> m;
     if (1 == argc) return 0;
+    cout << argv[1] << endl;
     freopen(argv[1], "r", stdin);
     for (i=0; i<MAX; i++) {
-        scanf("%d", &n);
+        if (scanf("%ld", &n) == EOF) break;
         arr[i] = n;
         m[n] = i;
         //cout << m[n] << "\t: " << n << endl;
     }
+    n = i;
+    cout << "n=" << n << endl;
+    int bucket[20000+3] = {};
     for (c=0, i=-10000; i<=10000; i++) {
-        for (j=0; j<MAX; j++) {
+        for (j=0; j<n; j++) {
             auto it = m.find(i-arr[j]);
             if (it != m.end()) {
-                //if (it->second <= j) continue;
-                cout << ++c <<  ": " << it->first << ": " << it->second << "\t: " << arr[j] << ": " << j
+                if (it->first == arr[j]) continue; /*distinctness check*/
+                //if (it->second == j) continue; /*skip self pairing*/
+                int sum = it->first + arr[j];
+                if (bucket[sum+10000]==1) continue;
+                cout << ++c <<  "\t: " << it->first << "\t: " << arr[j] << "\t: " << sum
                 << endl;
-                break;
+                bucket[sum+10000]=1;
+                //break;
             }
         }
     }
-    cout << "total: " << c << endl;
+    for (i=0, d=0; i<20000+3; i++) if (bucket[i]==1) d++;
+    cout << "total: " << c << ": " << d << endl;
     return 0;
 }
 
