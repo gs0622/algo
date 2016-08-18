@@ -156,7 +156,7 @@ int main(int argc, char **argv)
 	printf("%d,%d,%d,%d,%d\n", top[0], top[1], top[2], top[3], top[4]);
 	free(line);
 	fclose(stream);
-	return 0;	
+	return 0;
 }
 
 
