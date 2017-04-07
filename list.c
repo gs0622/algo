@@ -1,0 +1,96 @@
+#include <stdlib.h>
+#include <assert.h>
+
+#include "list.h"
+
+/* Given an int and a reference to the head pointer (i.e. a struct
+node** pointer to the head pointer), add a new node at the head of the
+list with the standard 3-step-link-in: create the new node, set its .next to
+point to the current head, and finally change the head to point to the new
+node.
+*/
+void push(struct node **href, int data)
+{
+	struct node *n = malloc(sizeof(struct node));
+	n->data = data;
+	n->next = *href;
+	*href = n;
+}
+
+/* Pop() takes a non-empty list, deletes
+the head node, and returns the head node's data.*/
+int pop(struct node **href)
+{
+	struct node *h = *href;
+	int data = h->data;
+	*href = h->next;
+	free(h);
+	return data;
+}
+
+int length(struct node *head)
+{
+	struct node *cur = head;
+	int cnt = 0;
+	while (cur) cnt++, cur = cur->next;
+	return cnt;
+}
+
+void remove_duplicates(struct node *head)
+{
+	if (head == NULL) return;
+	struct node *cur = head;
+	while (cur->next) {
+		if (cur->next->data == cur->data) {
+			struct node *tmp = cur->next->next;	// save next->next
+			free(cur->next);			// free next
+			cur->next = tmp;			// set next
+		} else
+			cur = cur->next;
+	}
+}
+
+void move_node(struct node **dstref, struct node **srcref)
+{
+	if (!srcref || !dstref) return;
+	struct node *tmp = *srcref;	// save
+	assert(tmp);
+	*srcref = tmp->next;		// shift source
+	tmp->next = *dstref;		// push to dest
+	*dstref = tmp;
+}
+
+int getnth(struct node *src, int n)
+{
+	if (!src) assert((0);
+	struct node *cur = src;
+	int cnt = 0;
+	while (cur) {
+		if (cnt = n) return cur->data;
+		cnt += 1, cur = cur->next;
+	}
+	assert(0);
+}
+
+void delete(struct node **href)
+{
+	struct node *cur = *href, *tmp;
+	while (cur) {
+		tmp = cur;
+		cur = cur->next;
+		free(tmp);
+	}
+	*href = NULL;
+}
+
+int insertnth(struct node **href, int n, int data);
+{
+	struct node *cur = &dummy;
+	int i;
+	for (i=0; i<cnt; i++) {
+		assert(cnt);
+		cur = cur->next;
+	}
+	assert(cur);
+	push(&(cur->next), data);
+}
