@@ -1,7 +1,18 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
 #include "list.h"
+
+void dump(struct node *src)
+{
+	struct node *cur = src;
+	while (cur) {
+		printf("%d ", cur->data);
+		cur = cur->next;
+	}
+	printf("\n");
+}
 
 /* Given an int and a reference to the head pointer (i.e. a struct
 node** pointer to the head pointer), add a new node at the head of the
@@ -62,11 +73,11 @@ void move_node(struct node **dstref, struct node **srcref)
 
 int getnth(struct node *src, int n)
 {
-	if (!src) assert((0);
+	assert(src);
 	struct node *cur = src;
 	int cnt = 0;
 	while (cur) {
-		if (cnt = n) return cur->data;
+		if (cnt == n) return cur->data;
 		cnt += 1, cur = cur->next;
 	}
 	assert(0);
@@ -83,14 +94,33 @@ void delete(struct node **href)
 	*href = NULL;
 }
 
-int insertnth(struct node **href, int n, int data);
+/* insert to the nth */
+int insert(struct node **href, int n, int data)
 {
-	struct node *cur = &dummy;
-	int i;
-	for (i=0; i<cnt; i++) {
-		assert(cnt);
-		cur = cur->next;
-	}
-	assert(cur);
-	push(&(cur->next), data);
+	if (0 != n) {
+		struct node dummy = {};
+		struct node *cur = &dummy;
+		dummy.next = *href;
+		int i;
+		for (i=0; i<n; i++) {
+			assert(cur);
+			cur = cur->next;
+		}
+		assert(cur);
+		push(&(cur->next), data);
+	} else
+		push(href, data);
+}
+
+int main(void)
+{
+	struct node *head = NULL;
+	push(&head, 5);
+	push(&head, 4);
+	push(&head, 2);
+	push(&head, 1);
+	insert(&head, 2, 3);
+	insert(&head, 0, 0);
+	dump(head);
+	return 0;
 }
