@@ -35,14 +35,16 @@ int partition(int *p, int left, int right)
  */
 #if 1
 	int i = left, j = right+1, pivot = p[left];
-    while (1) {
-        while (p[++i] < pivot) if (i == right) break;
-        while (p[--j] > pivot) if (j == left) break;
-        if (i >= j) break;
-        swap(&p[i],  &p[j]); 
-    }
-    swap(&p[left], &p[j]);
-    return j;
+	while (1) {
+		while (p[++i] < pivot)
+			if (i == right) break;
+		while (p[--j] > pivot)
+			if (j == left) break;
+		if (i >= j) break;
+		swap(&p[i],  &p[j]); /* p[i] >= pivot and p[j] <= pivot */
+	}
+	swap(&p[left], &p[j]); /* cross */
+	return j;
 #else
 	int i, pivot, idx = left;
 	pivot = p[idx];
