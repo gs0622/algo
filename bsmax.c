@@ -14,10 +14,13 @@ int bs_max(int *arr, int lo, int hi)
 	int mi = (lo+hi)/2, max = arr[hi];
 	if (lo == hi) return max;
 	if (arr[lo] >= arr[mi] && arr[mi] > arr[hi]) {
+		/* descending */
 		max = MAX(max, bs_max(arr, lo, (mi>lo)? mi-1: mi));
 	} else if (arr[hi] > arr[mi] && arr[mi] >= arr[lo]) {
+		/* ascending */
 		max = MAX(max, bs_max(arr, (mi<hi)? mi+1: mi, hi));
 	} else {
+		/* fall apart, peak in both sides */
 		max = MAX(max, bs_max(arr, lo, (mi>lo)? mi-1: mi));
 		max = MAX(max, bs_max(arr, (mi>hi)? mi+1: mi, hi));
 	}
