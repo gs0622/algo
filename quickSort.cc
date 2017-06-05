@@ -1,8 +1,9 @@
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 using namespace std;
 
-void swap(int *a, int *b) {
+static void swap(int *a, int *b) {
     int tmp = *a;
     *a = *b, *b = tmp;
 }
@@ -23,7 +24,7 @@ int partition(int a[], int lo, int hi)
         // check cross
 		if (i >= j) break;
 
-		swap(&a[lo], &a[hi]);
+		swap(&a[i], &a[j]);
 	}
     // position j is last one on lo invariant part
 	swap(&a[lo], &a[j]);
@@ -56,10 +57,13 @@ int select(int a[], int sz, int k) {
 
 int main(void) {
     int a[10];
-    for (int i = 0; i < 10; i++) a[i] = 10 - i;
+    for (int i = 0; i < 10; i++) a[i] = i;
+    srand(time(0));
+    random_shuffle(a, a+10);
     for (auto x: a) cout << x << " ";
     cout << endl;
     sort(a, 0, 9);
+    //std::sort(a, a+10);
     for (auto x: a) cout << x << " ";
     cout << endl;
     return 0;
