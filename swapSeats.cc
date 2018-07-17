@@ -43,9 +43,20 @@ int main(){
         vector<int> after3{0,4,2,3,1};
         vector<int> after4{3,4,2,0,1};
         vector<int> after5{3,4,0,2,1};
+        vector<int> afterx(before);
+	
 	cout << s.swapSeats(before, after1) << endl;
 	cout << s.swapSeats(before, after2) << endl;
 	cout << s.swapSeats(before, after3) << endl;
 	cout << s.swapSeats(before, after4) << endl;
-	cout << s.swapSeats(before, after5) << endl;
+
+	srand(time(0));
+	int worse=0, res;
+	for (int i=0; i<10; ++i) {	// observation of random
+		random_shuffle(afterx.begin(), afterx.end());
+		res=s.swapSeats(before, afterx);
+		worse=max(res,worse);
+		cout << res << ' ';
+	}
+	cout << endl << "max: " << worse << endl;
 }
