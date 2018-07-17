@@ -5,31 +5,32 @@ public:
 	// in: initial seats state B, target seats state A, out: steps required
 	// O(V+E) time, O(V) space: V for total vertices in terms of seats states
 	int swapSeats(vector<int>& B, vector<int>& A) {
-                int cnt=0;
-                queue<vector<int>> q;
-                q.push(B);
+                string AA, BB;
+                for (int i=0; i<A.size(); ++i)
+                        AA+=A[i]+'0', BB+=B[i]+'0';
+                queue<string> q;
+                unordered_set<string> visit;                            // hashset of visited state
+                q.push(BB);                                             // initial state
+                int res=0;
                 while (!q.empty()) {
                         int n=q.size();
                         for (int i=0; i<n; ++i) {
-                                vector<int> C=q.front(); q.pop();       // C for candidate vector state
-                                if (C==A)
-                                        return cnt;
-                                int empty;                              // index of 0, aka. empty seat
-                                for (int j=0; j<C.size(); ++j) {        // O(n) to find empty seat
-                                        if (C[j]==0) {
-                                                empty=j;
-                                                break;
-                                        }       
-                                }       
-                                for (int j=0; j<C.size(); ++j)          // O(n) to enumarate all next states
+                                string CC=q.front(); q.pop();           
+                                if (CC==AA)                             // match target, return require steps
+                                        return res;                     
+                                visit.insert(CC);                       // this state is visited
+                                int empty=CC.find('0');                 // locate empty seat 
+                                for (int j=0; j<CC.size(); ++j) {       // enumerate all the nearest neighboring states
                                         if (j!=empty) {
-                                                swap(C[j],C[empty]);
-                                                q.push(C);
-                                                swap(C[j],C[empty]);
-                                        }       
-                        }               
-                        ++cnt;
-                }       
+                                                swap(CC[j], CC[empty]); 
+                                                if (visit.count(CC)==0)    // skip visited states
+                                                        q.push(CC);
+                                                swap(CC[j], CC[empty]);
+                                        }
+                                }
+                        }
+                        ++res;
+                }
                 return -1;
 	}
 };
@@ -40,8 +41,8 @@ int main(){
 	vector<int> after1{1,0,2,3,4};
         vector<int> after2{1,4,2,3,0};
         vector<int> after3{0,4,2,3,1};
-        vector<int> after4{0,2,1,3,4};
-        vector<int> after5{0,4,3,2,1};
+        vector<int> after4{3,4,2,0,1};
+        vector<int> after5{3,4,0,2,1};
 	cout << s.swapSeats(before, after1) << endl;
 	cout << s.swapSeats(before, after2) << endl;
 	cout << s.swapSeats(before, after3) << endl;
