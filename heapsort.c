@@ -38,6 +38,18 @@ static void heapify(int arr[], int sz)
             swap(&arr[floor], &arr[right]);
     }
 }
+static void heapify1(int *arr, int sz)
+{
+	int i, left, right;
+	for (i = sz/2; i > 0; i -= 1) {
+		left = 2*i-1, right = 2*i;
+		if (less(&arr[i-1], &arr[left]))
+			swap(&arr[i-1], &arr[left]);
+		if (right > sz) continue;
+		if (less(&arr[i-1], &arr[right]))
+			swap(&arr[i-1], &arr[right]);
+	}
+}
 void heapsort(int arr[], int sz) 
 {
     int i;

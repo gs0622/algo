@@ -55,7 +55,7 @@ int quickselect(int *p, int left, int right, int k)
 	int idx;
 	if (left == right) return p[left];
 	idx = partition(p, left, right);
-    if (k==idx) return p[idx];
+	if (k==idx) return p[idx];
 	else if (k<idx) return quickselect(p, left, idx-1, k);
 	else return quickselect(p, idx+1, right, k);
 }
@@ -64,15 +64,15 @@ int main(int argc, char **argv)
 {
 	int n, k, *p;
 	n = (argc>1)? atoi(argv[1]) : 10;
-    k = (argc>2)? atoi(argv[2]) : n/2;
-    k = (k > n)? k%n:k;
+	k = (argc>2)? atoi(argv[2]) : n/2;
+	k = (k > n)? k%n:k;
 	p = create_array(n);
-    printf("n=%d k=%d\n", n, k);
+	printf("n=%d k=%d\n", n, k);
 	print_array(p, n);
 	printf("%dth=%d\n", k, quickselect(p, 0, n-1, k-1));
-    print_array(p, n);
-    /*after full sorting, for manual review*/
-    printf("sort\n");
+	print_array(p, n);
+	/*after full sorting, for manual review*/
+	printf("sort\n");
 	qsort(p, n, 4, cmp);
 	print_array(p, n);
 	free(p);

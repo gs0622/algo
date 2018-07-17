@@ -41,6 +41,22 @@ void shuffle(int a[], int n)
         swap(&a[i], &a[j]);
     }
 }
+int rdrand(void)
+{
+	asm volatile (
+		"rdrand  %eax\r\n"
+	);
+} 
+void shuffle2(int a[], int n)
+{
+	int i, j;
+	for (i=n-1;i>0;i--) {
+		int r = rdrand();
+		r = (r < 0)? -r: r;
+		j = (int)(r & 0x7fffffff)%(i+1);
+		swap(&a[i], &a[j]);
+	}
+}
 //void getShuffleList(unsigned int* shuffleList, const unsigned int shuffleNumber)
 void getShuffleList(int* shuffleList, int shuffleNumber)
 {
@@ -78,7 +94,7 @@ void getShuffleList(int* shuffleList, int shuffleNumber)
 }
 static void help(char *name)
 {
-    printf(" usage: %s elements(default 10) loops(default 100)\r\n", name);
+    printf(" usage: %s elements (default 10) loops (default 100)\r\n", name);
     exit(0);
 }
 int main(int argc, char **argv)
@@ -90,10 +106,17 @@ int main(int argc, char **argv)
     loop = (argc>2)? atoi(argv[2]) : 100;
     arr = malloc(sizeof(int)*n);
     for (i=0;i<n;i++) arr[i] = i;
+
     for (i=0,us=0;i<loop;i++) us += profile_us(shuffle, arr, n);
     printf("HP's shuffle arr[%d] %d loops takes %lld us, avg in %3.2f ms\n", n, loop, us, (double)us/(double)loop);
+    if (n<50) printf("arr[%d]=", n), print_array(arr, n);
+
     for (i=0,us=0;i<loop;i++) us += profile_us(getShuffleList, arr, n);
     printf("YT's shuffle arr[%d] %d loops takes %lld us, avg in %3.2f ms\n", n, loop, us, (double)us/(double)loop);
+    if (n<50) printf("arr[%d]=", n), print_array(arr, n);
+
+    for (i=0,us=0;i<loop;i++) us += profile_us(shuffle2, arr, n);
+    printf("H+Y  shuffle arr[%d] %d loops takes %lld us, avg in %3.2f ms\n", n, loop, us, (double)us/(double)loop);
     if (n<50) printf("arr[%d]=", n), print_array(arr, n);
     free(arr);
     return 0;

@@ -3,11 +3,6 @@
 #include <iostream>
 using namespace std;
 
-static void swap(int *a, int *b) {
-    int tmp = *a;
-    *a = *b, *b = tmp;
-}
-
 int partition(int a[], int lo, int hi)
 {
 	int i = lo, j = hi+1, pivot = a[lo];
@@ -24,10 +19,10 @@ int partition(int a[], int lo, int hi)
         // check cross
 		if (i >= j) break;
 
-		swap(&a[i], &a[j]);
+		swap(a[i], a[j]);
 	}
     // position j is last one on lo invariant part
-	swap(&a[lo], &a[j]);
+	swap(a[lo], a[j]);
 
     // now, a[lo .. j-1] <= a[j] <= a[j+1 .. hi]
 	return j;
@@ -39,6 +34,12 @@ void sort(int a[], int lo, int hi) {
     int j = partition(a, lo, hi);
     sort(a, lo, j-1);
     sort(a, j+1, hi);
+}
+
+bool isSorted(int a[], int sz) {
+    for (int i = 1; i < sz; i++)
+        if (a[i] < a[i-1]) return false;
+    return true;
 }
 
 // return kth (index from 0) element
@@ -66,5 +67,6 @@ int main(void) {
     //std::sort(a, a+10);
     for (auto x: a) cout << x << " ";
     cout << endl;
+    cout << isSorted(a, 10) << endl;
     return 0;
 }

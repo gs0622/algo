@@ -3,7 +3,13 @@
 #include <assert.h>
 
 #include "list.h"
-
+/*
+struct dlist {
+	int data;
+	struct dlist *prev;
+	struct dlist *next;
+};
+*/
 struct queue {
 	struct dlist *head;
 	struct dlist *tail;

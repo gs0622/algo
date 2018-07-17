@@ -3,10 +3,11 @@
 
 float mysqrt(int val)
 {
-    float sqrt, old;
+    double sqrt, old;
     sqrt = 1;
     while (1) {
         sqrt = (sqrt + val / sqrt) / 2; /*Newton's method*/
+	printf("%f: %f\n", sqrt, old);
         if (old == sqrt) break; else old = sqrt;
     }
     return sqrt;

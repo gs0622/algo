@@ -26,10 +26,7 @@ void insert(struct node **ref, int data)
 		return;
 	}
 
-	if (data == p->data) {
-		// assert(0);
-		return;
-	}
+	if (data == p->data) { // assert(0); return; }
 
 	insert((data > p->data)? &(p->right): &(p->left), data);
 }

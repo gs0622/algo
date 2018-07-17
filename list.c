@@ -23,6 +23,7 @@ node.
 void push(struct node **href, int data)
 {
 	struct node *n = malloc(sizeof(struct node));
+	assert(n);
 	n->data = data;
 	n->next = *href;
 	*href = n;
@@ -33,6 +34,7 @@ the head node, and returns the head node's data.*/
 int pop(struct node **href)
 {
 	struct node *h = *href;
+	assert(h);
 	int data = h->data;
 	*href = h->next;
 	free(h);
@@ -111,7 +113,36 @@ int insert(struct node **href, int n, int data)
 	} else
 		push(href, data);
 }
-
+void sorted_insert(struct node **href, struct node *n)
+{
+	assert(href);
+	struct node dummy, *cur = &dummy;
+	dummy.next = *href;
+	while (cur->next && cur->next->data < n->data)
+		cur = cur->next;
+	n->next = cur->next;
+	cur->next = n;
+	*href = dummy.next;
+}
+void insertion_sort(struct node **href)
+{
+	assert(href);
+	struct node *res = NULL, *cur = *href, *next;
+	while (cur) {
+		next = cur->next;
+		sorted_insert(&res, cur);
+		cur = next;
+	}
+	*href = res;
+}
+void reverse(struct node **href)
+{
+	assert(href);
+	struct node *res = NULL, *cur = *href;
+	while (cur)
+		move_node(&res, &cur);
+	*href = res;
+}
 int main(void)
 {
 	struct node *head = NULL;
@@ -122,5 +153,10 @@ int main(void)
 	insert(&head, 2, 3);
 	insert(&head, 0, 0);
 	dump(head);
+	reverse(&head);
+	dump(head);
+	insertion_sort(&head);
+	dump(head);
+
 	return 0;
 }

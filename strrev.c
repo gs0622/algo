@@ -14,6 +14,13 @@ void strrev(char *p)
     for (--q/*skip '\0'*/;q>p;++p,--q) swap(p, q);
 }
 
+void strrev_r(char *p, int lo, int hi)
+{
+	if (lo >= hi) return;
+	char c = p[lo];
+	p[lo] = p[hi], p[hi] = c;
+	strrev_r(p, lo+1, hi-1);
+}
 void strrev_utf8(char *p)
 {
     char *q = p;
@@ -38,11 +45,15 @@ void strrev_utf8(char *p)
 
 int main(void)
 {
-    char s[128];
+    char s[128], i, len;
     while (scanf("%s", s)!=EOF) {
+	for (i = 0, len = 0; s[i]; i+=1, len+=1)
+		;
         printf("in : %s\n", s);
         strrev(s);
         //strrev_utf8(s);
+        printf("out: %s\n", s);
+        strrev_r(s, 0, len-1);
         printf("out: %s\n", s);
     }
     return 0;
