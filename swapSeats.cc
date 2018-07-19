@@ -2,6 +2,79 @@
 using namespace std;
 class Solution {
 public:
+	int distance(vector<int>& A, vector<int>& B) {
+		int res=0;
+		for (int i=0; i<A.size(); ++i) if (A[i]!=B[i]) ++res;
+		string AA, BB;
+		for (int i=0; i<A.size(); ++i)
+			AA+=A[i]+'0', BB+=B[i]+'0';
+		return res;
+	}
+	int distance(string& A, string& B) {
+		int res=0;
+		for (int i=0; i<A.size(); ++i) if (A[i]!=B[i]) ++res;
+		string AA, BB;
+		for (int i=0; i<A.size(); ++i)
+			AA+=A[i]+'0', BB+=B[i]+'0';
+		return res;
+	}
+	// DFS backtracking
+	int swapSeats2(vector<int>& B, vector<int>& A) {
+		string AA, BB;
+		for (int i=0; i<A.size(); ++i)
+			AA+=A[i]+'0', BB+=B[i]+'0';
+		stack<pair<string,int>> stk;
+		stk.push({BB,0});
+		unordered_set<string> visit;				// hashset of visited state
+		while (!stk.empty()) {
+			auto top=stk.top(); stk.pop();
+			string CC=top.first;
+			int steps=top.second;
+			visit.insert(CC);
+			if (CC==AA) return steps; 
+			int dist=distance(AA,CC);
+			int empty=CC.find('0');
+			for (int i=0; i<CC.size(); ++i) {
+				if (i!=empty) {
+					swap(CC[i], CC[empty]);
+					int dd=distance(AA,CC);
+					if (dd<=dist && visit.count(CC)==0)
+						stk.push({CC, steps+1});
+					swap(CC[i], CC[empty]);
+				}
+			}
+		}
+		return -1;
+	}
+	// BFS, wrong?
+	int swapSeats1(vector<int>& B, vector<int>& A) {
+		string AA, BB;
+		for (int i=0; i<A.size(); ++i)
+			AA+=A[i]+'0', BB+=B[i]+'0';
+		queue<string> q;
+		q.push(BB);
+		int res=0;
+		while (!q.empty()) {
+			int n=q.size();
+			for (int i=0; i<n; ++i) {
+				auto CC=q.front(); q.pop();
+				if (CC==AA) return res;
+				int d=distance(AA,CC);
+				int empty=CC.find('0');
+				for (int j=0; j<CC.size(); ++j) {	// enumerate all the nearest neighboring states
+					if (j!=empty) {
+						swap(CC[j], CC[empty]);
+						int dd=distance(AA,CC);
+						if (dd<=d) q.push(CC);
+						swap(CC[j], CC[empty]);
+					}
+				}
+			}
+			++res;
+		}
+		return -1;
+
+	}
 	// in: initial seats state B, target seats state A, out: steps required
 	// O(V+E) time, O(V) space: V for total vertices in terms of seats states
 	int swapSeats(vector<int>& B, vector<int>& A) {
@@ -45,18 +118,19 @@ int main(){
 	vector<int> after5{3,4,0,2,1};
 	vector<int> afterx(before);
 
-	cout << s.swapSeats(before, after1) << endl;
-	cout << s.swapSeats(before, after2) << endl;
-	cout << s.swapSeats(before, after3) << endl;
-	cout << s.swapSeats(before, after4) << endl;
+	cout << s.swapSeats(before, after1) << ' ' << s.swapSeats2(before, after1) << endl;
+	cout << s.swapSeats1(before, after2) << ' ' << s.swapSeats2(before, after2) << endl;
+	cout << s.swapSeats1(before, after3) << ' ' << s.swapSeats2(before, after3) << endl;
+	cout << s.swapSeats1(before, after4) << ' ' << s.swapSeats2(before, after4) << endl;
 
 	srand(time(0));
-	int worse=0, res;
+	int worse=0, res, res1;
 	for (int i=0; i<10; ++i) {	// observation of random
 		random_shuffle(afterx.begin(), afterx.end());
 		res=s.swapSeats(before, afterx);
+		res1=s.swapSeats1(before, afterx);
 		worse=max(res,worse);
-		cout << res << ' ';
+		cout << res << ":" << res1 << ' ';
 	}
 	cout << endl << "max: " << worse << endl;
 }
