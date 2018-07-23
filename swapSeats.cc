@@ -18,6 +18,58 @@ public:
 			AA+=A[i]+'0', BB+=B[i]+'0';
 		return res;
 	}
+	// two-end BFS
+	int swapSeats4(vector<int>& B, vector<int>& A) {
+		if (A==B) return 0;
+		int dist=0;
+		set<vector<int>> head, tail, *phead, *ptail;
+		head.insert(B), tail.insert(A);
+		while (!head.empty() && !tail.empty()) {
+			if (head.size()<tail.size()) phead=&head,ptail=&tail;
+			else phead=&tail,ptail=&head;
+			set<vector<int>> tmp;
+			for (auto it=phead->begin(); it!=phead->end(); ++it) {
+				vector<int> C=*it;
+				int empty = std::distance(C.begin(), find(C.begin(),C.end(), 0));
+				for (int j=0; j<C.size(); ++j) {
+					if (j!=empty) {
+						swap(C[j],C[empty]);
+						if (ptail->count(C))
+							return dist+1;
+						tmp.insert(C);
+						swap(C[j],C[empty]);
+					}
+				}
+			}
+			swap(*phead,tmp);
+			++dist;
+		}
+		return -1;
+	}
+	// BFS
+	int swapSeats3(vector<int>& B, vector<int>& A) {
+		int dist=0;
+		queue<vector<int>> q;
+		q.push(B);
+		while (!q.empty()) {
+			int n=q.size();
+			for (int i=0; i<n; ++i) {
+				vector<int> C=q.front(); q.pop();	// C for candidate vector state
+				if (C==A)
+					return dist;
+				int empty = std::distance(C.begin(), find(C.begin(),C.end(), 0));
+				for (int j=0; j<C.size(); ++j) {	// O(n) to enumarate all next states
+					if (j!=empty) {
+						swap(C[j],C[empty]);
+						q.push(C);
+						swap(C[j],C[empty]);
+					}
+				}
+			}
+			++dist;
+		}
+		return -1;
+	}
 	// DFS backtracking
 	int swapSeats2(vector<int>& B, vector<int>& A) {
 		string AA, BB;
@@ -118,17 +170,17 @@ int main(){
 	vector<int> after5{3,4,0,2,1};
 	vector<int> afterx(before);
 
-	cout << s.swapSeats(before, after1) << ' ' << s.swapSeats2(before, after1) << endl;
-	cout << s.swapSeats1(before, after2) << ' ' << s.swapSeats2(before, after2) << endl;
-	cout << s.swapSeats1(before, after3) << ' ' << s.swapSeats2(before, after3) << endl;
-	cout << s.swapSeats1(before, after4) << ' ' << s.swapSeats2(before, after4) << endl;
+	cout << s.swapSeats(before, after1) << ' ' << s.swapSeats4(before, after1) << endl;
+	cout << s.swapSeats(before, after2) << ' ' << s.swapSeats4(before, after2) << endl;
+	cout << s.swapSeats(before, after3) << ' ' << s.swapSeats4(before, after3) << endl;
+	cout << s.swapSeats(before, after4) << ' ' << s.swapSeats4(before, after4) << endl;
 
 	srand(time(0));
 	int worse=0, res, res1;
 	for (int i=0; i<10; ++i) {	// observation of random
 		random_shuffle(afterx.begin(), afterx.end());
 		res=s.swapSeats(before, afterx);
-		res1=s.swapSeats1(before, afterx);
+		res1=s.swapSeats4(before, afterx);
 		worse=max(res,worse);
 		cout << res << ":" << res1 << ' ';
 	}
