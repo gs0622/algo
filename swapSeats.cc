@@ -18,6 +18,32 @@ public:
 			AA+=A[i]+'0', BB+=B[i]+'0';
 		return res;
 	}
+	int swapSeats6(vector<int>& B, vector<int>& A) {
+		vector<int> C=B;	// backup, O(n) copy
+		int cnt=0, empty=std::distance(B.begin(),find(B.begin(), B.end(), 0));			// locate empty slot
+		unordered_map<int,int> mp;
+		for (int i=0; i<B.size(); ++i)
+			mp[B[i]]=i;
+		for (int i=0; i<B.size(); ++i) {
+			if (B[i]!=A[i]) {
+				if (i!=mp[0]) {
+					int tmp=B[i];
+					swap(B[i], B[empty]);
+					mp[tmp]=empty;
+					empty=i,mp[0]=i;
+					cnt+=1;
+				}
+				swap(B[mp[A[i]]],B[i]);
+				empty=mp[A[i]];
+				mp[A[i]]=i,mp[0]=empty;
+				cnt+=1;
+			}
+		}
+		assert(A==B);
+		B=C;			// restore, O(n) copy
+		return cnt;
+	}
+	// buggy
 	int swapSeats5(vector<int>& B, vector<int>& A) {
 		if (B==A) return 0;					// O(n)
 		unordered_map<int,int> mp;
@@ -205,13 +231,13 @@ int main(){
 	vector<int> c3a4{1,0,3,2};//4 3
 	vector<int> c3a5{0,1,3,2};//3 2
 	vector<int> c3a6{0,2,3,1};//4 3
-	cout << s.swapSeats4(c3b, c3a1) << ' ' << s.swapSeats5(c3b, c3a1) << endl;
-	cout << s.swapSeats4(c3b, c3a2) << ' ' << s.swapSeats5(c3b, c3a2) << endl;
-	cout << s.swapSeats4(c3b, c3a3) << ' ' << s.swapSeats5(c3b, c3a3) << endl;
-	cout << s.swapSeats4(c3b, c3a4) << ' ' << s.swapSeats5(c3b, c3a4) << endl;
-	cout << s.swapSeats4(c3b, c3a5) << ' ' << s.swapSeats5(c3b, c3a5) << endl;
-	cout << s.swapSeats4(c3b, c3a6) << ' ' << s.swapSeats5(c3b, c3a6) << endl;
-/*
+	cout << s.swapSeats4(c3b, c3a1) << ' ' << s.swapSeats6(c3b, c3a1) << endl;
+	cout << s.swapSeats4(c3b, c3a2) << ' ' << s.swapSeats6(c3b, c3a2) << endl;
+	cout << s.swapSeats4(c3b, c3a3) << ' ' << s.swapSeats6(c3b, c3a3) << endl;
+	cout << s.swapSeats4(c3b, c3a4) << ' ' << s.swapSeats6(c3b, c3a4) << endl;
+	cout << s.swapSeats4(c3b, c3a5) << ' ' << s.swapSeats6(c3b, c3a5) << endl;
+	cout << s.swapSeats4(c3b, c3a6) << ' ' << s.swapSeats6(c3b, c3a6) << endl;
+
 	vector<int> c4b{0,1,2};
 	vector<int> c4a{2,1,0};
 	cout << s.swapSeats4(c4b, c4a) << ' ' << s.swapSeats5(c4b, c4a) << endl;
@@ -223,17 +249,17 @@ int main(){
 	srand(time(0));
 	int worse=0, res, res1;
 	for (int i=0; i<10; ++i) {	// observation of random
-		random_shuffle(c3a.begin(), c3a.end());
-		res=s.swapSeats4(c3b, c3a);
-		res1=s.swapSeats5(c3b, c3a);
+		random_shuffle(c5a.begin(), c5a.end());
+		res=s.swapSeats4(c5b, c5a);
+		res1=s.swapSeats6(c5b, c5a);
 		if (res!=res1) {
 			cout << endl;
-			for (auto n: c3a) cout << n <<  ' ';
+			for (auto n: c5a) cout << n <<  ' ';
 			cout << endl;
 		}
 		worse=max(res,worse);
 		cout << res << ":" << res1 << ' ';
 	}
 	cout << endl << "max: " << worse << endl;
-*/
+
 }
