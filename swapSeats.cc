@@ -18,9 +18,33 @@ public:
 			AA+=A[i]+'0', BB+=B[i]+'0';
 		return res;
 	}
+	// O(n) linear, refactor version-6
+	// 0123 -> 3210
+	// 0123 - 3120 - 3021 - 3201 - 3210
+	int swapSeats7(vector<int> B, vector<int> A) {
+		int steps=0, tmp;
+		unordered_map<int,int> mp;
+		for (int i=0; i<B.size(); ++i)			// O(n) space
+			mp[B[i]]=i;
+		for (int i=0; i<B.size(); ++i) {
+			if (B[i]!=A[i]) {
+				steps+=B[i]? 2:1;
+				if (B[i]!=0) {			// step-1: switch incorrect person to empty
+					tmp = B[i];
+					swap(B[i], B[mp[0]]);
+					mp[tmp]=mp[0], mp[0]=i;	// tricky: B[i] has been changed
+				}
+				swap(B[i], B[mp[A[i]]]);	// step-2: move correct one to here
+				tmp=mp[A[i]], mp[A[i]]=i, mp[0]=tmp;
+			}
+		}
+		assert(A==B);
+		return steps;
+	}
+	// O(n) linear
 	int swapSeats6(vector<int>& B, vector<int>& A) {
 		vector<int> C=B;	// backup, O(n) copy
-		int cnt=0, empty=std::distance(B.begin(),find(B.begin(), B.end(), 0));			// locate empty slot
+		int cnt=0, empty=std::distance(B.begin(),find(B.begin(), B.end(), 0));		// locate empty slot
 		unordered_map<int,int> mp;
 		for (int i=0; i<B.size(); ++i)
 			mp[B[i]]=i;
@@ -231,12 +255,12 @@ int main(){
 	vector<int> c3a4{1,0,3,2};//4 3
 	vector<int> c3a5{0,1,3,2};//3 2
 	vector<int> c3a6{0,2,3,1};//4 3
-	cout << s.swapSeats4(c3b, c3a1) << ' ' << s.swapSeats6(c3b, c3a1) << endl;
-	cout << s.swapSeats4(c3b, c3a2) << ' ' << s.swapSeats6(c3b, c3a2) << endl;
-	cout << s.swapSeats4(c3b, c3a3) << ' ' << s.swapSeats6(c3b, c3a3) << endl;
-	cout << s.swapSeats4(c3b, c3a4) << ' ' << s.swapSeats6(c3b, c3a4) << endl;
-	cout << s.swapSeats4(c3b, c3a5) << ' ' << s.swapSeats6(c3b, c3a5) << endl;
-	cout << s.swapSeats4(c3b, c3a6) << ' ' << s.swapSeats6(c3b, c3a6) << endl;
+	cout << s.swapSeats3(c3b, c3a1) << ' ' << s.swapSeats7(c3b, c3a1) << endl;
+	cout << s.swapSeats3(c3b, c3a2) << ' ' << s.swapSeats7(c3b, c3a2) << endl;
+	cout << s.swapSeats3(c3b, c3a3) << ' ' << s.swapSeats7(c3b, c3a3) << endl;
+	cout << s.swapSeats3(c3b, c3a4) << ' ' << s.swapSeats7(c3b, c3a4) << endl;
+	cout << s.swapSeats3(c3b, c3a5) << ' ' << s.swapSeats7(c3b, c3a5) << endl;
+	cout << s.swapSeats3(c3b, c3a6) << ' ' << s.swapSeats7(c3b, c3a6) << endl;
 
 	vector<int> c4b{0,1,2};
 	vector<int> c4a{2,1,0};
@@ -252,11 +276,11 @@ int main(){
 		random_shuffle(c5a.begin(), c5a.end());
 		res=s.swapSeats4(c5b, c5a);
 		res1=s.swapSeats6(c5b, c5a);
-		if (res!=res1) {
+		/*if (res!=res1) {
 			cout << endl;
 			for (auto n: c5a) cout << n <<  ' ';
 			cout << endl;
-		}
+		}*/
 		worse=max(res,worse);
 		cout << res << ":" << res1 << ' ';
 	}
