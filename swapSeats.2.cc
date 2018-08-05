@@ -18,9 +18,9 @@ public:
 					swap(B[i], B[mp[0]]);
 					mp[tmp]=mp[0], mp[0]=i;	// tricky: B[i] has been changed
 					++steps;
-					if (B==A) break;	// save next step
+					//if (B==A) break;	// save step-2, but costs O(n)
 				}
-				if (A[i]==0) continue;		// save one step
+				if (A[i]==0) continue;		// save step-2
 				swap(B[i], B[mp[A[i]]]);	// step-2: move correct one to here
 				//tmp=mp[A[i]], mp[A[i]]=i, mp[0]=tmp;
 				swap(mp[A[i]], mp[0]);
@@ -40,9 +40,9 @@ public:
 					pos=std::distance(B.begin(),find(B.begin(), B.end(), 0));
 					swap(B[i], B[pos]);
 					++steps;
-					if (B==A) break;	// save next step
+					//if (B==A) break;	// save step-2, but costs O(n)
 				}
-				if (A[i]==0) continue;		// save one step
+				if (A[i]==0) continue;		// save step-2
 				pos=std::distance(B.begin(),find(B.begin(), B.end(), A[i]));
 				swap(B[i], B[pos]);		// step-2: move correct one to here
 				++steps;
